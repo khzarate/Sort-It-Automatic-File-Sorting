@@ -3,7 +3,7 @@
 	  BS Computer Science 4th year, Season 1
 	  2017
 
-   Sort-it v1.0
+   Sort-it
 #ce
 
 #include <GUIConstantsEx.au3>
