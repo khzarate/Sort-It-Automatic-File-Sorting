@@ -316,7 +316,6 @@ EndFunc
 	Local $fileExten [5000][1]
 	Local $Exten = Call("countElements", $fileExtenArray)
    _GUICtrlListView_AddArray($lv2, $Exten)
-   _ArrayDisplay($_fileDetails, "")
 EndFunc
 
 Func _FileGetExt($fileDir) ;function that will take the file extension for each file in the directory
@@ -649,9 +648,9 @@ $archive_opt = GUICtrlCreateCheckbox("Archive Whole Directory?", 16, 82, 153, 17
 
 $Group1 = GUICtrlCreateGroup("Encryption", 8, 120, 265, 137)
 GUICtrlCreateLabel("Enter Password:", 16, 144, 81, 17)
-$password_field = GUICtrlCreateInput("", 16, 160, 249, 21)
+$password_field = GUICtrlCreateInput("", 16, 160, 249, 21, $ES_PASSWORD)
 GUICtrlCreateLabel("Re-enter Password:", 16, 200, 97, 17)
-$reenter_pw = GUICtrlCreateInput("", 16, 216, 249, 21)
+$reenter_pw = GUICtrlCreateInput("", 16, 216, 249, 21, $ES_PASSWORD)
 
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 Local $ok_button = GUICtrlCreateButton("OK", 160, 264, 57, 33, $WS_GROUP)
@@ -676,7 +675,7 @@ EndFunc
 
 Func Archive()
    $archive_name = GUICtrlRead($archive_name)
-   $archive_type = ".7z"
+   $archive_type = ".zip"
    $output_dir = GUICtrlRead($output_dir)
    $password_field = GUICtrlRead($password_field)
    $reenter_pw = GUICtrlRead($reenter_pw)
@@ -684,10 +683,10 @@ Func Archive()
    If $archive_name <> "" And $archive_type <> "" Then
 	  If $password_field == "" And $reenter_pw == "" Then
 		 If GUICtrlRead($archive_opt) = 1 Then
-			RunWait('"' & @ScriptDir & '\Archive\7za' & '"' & " a " & $archive_name & $archive_type & " " & '"' & $working_directory & '/*' & '"')
-			;RunWait('"' & @ScriptDir & '\Archive\7za' & '"' & " a " & $archive_name & $archive_type & " " & '"' & $working_directory & '/*' & ' " -mx1')
+			RunWait('"' & @ScriptDir & '\Archive\zip' & '"' & " a " & $archive_name & $archive_type & " " & '"' & $working_directory & '/*' & '"' & " -mx1")
+			;RunWait('"' & @ScriptDir & '\Archive\7za' & '"' & " a " & $archive_name & $archive_type & " " & '"' & $working_directory & '/*' & '"')
 		 Else
-			RunWait('"' & @ScriptDir & '\Archive\7za' & '"' & " a " & $archive_name & $archive_type & " " & $selected_string)
+			RunWait('"' & @ScriptDir & '\Archive\zip' & '"' & " a " & $archive_name & $archive_type & " " & $selected_string & " -mx1")
 		 EndIf
 			   If @error = 0 Then
 				  FileMove(@ScriptDir & "\" & $archive_name & $archive_type, $output_dir)
@@ -698,9 +697,9 @@ Func Archive()
 	  ElseIf $password_field <> "" And $reenter_pw <> "" Then
 			If $password_field == $reenter_pw Then
 			    If GUICtrlRead($archive_opt) = 1 Then
-				  RunWait('"' & @ScriptDir & '\Archive\7za' & '"' & " a " & $archive_name & $archive_type & " " & '"' & $working_directory & '/*' & '"' & " " & "-p" & $password_field & " -mhe=on")
+				  RunWait('"' & @ScriptDir & '\Archive\zip' & '"' & " a " & $archive_name & $archive_type & " " & '"' & $working_directory & '/*' & '"' & " " & "-p" & $password_field & "-mx1")
 			   Else
-				  RunWait('"' & @ScriptDir & '\Archive\7za' & '"' & " a " & $archive_name & $archive_type & " " & $selected_string & " " & "-p" & $password_field & " -mhe=on")
+				  RunWait('"' & @ScriptDir & '\Archive\zip' & '"' & " a " & $archive_name & $archive_type & " " & $selected_string & " " & "-p" & $password_field & " -mx1")
 			   EndIf
 			   If @error = 0 Then
 				  FileMove(@ScriptDir & "\" & $archive_name & $archive_type, $output_dir)
