@@ -118,8 +118,6 @@ Opt("GUIOnEventMode", 1)
 	GUISetIcon(@ScriptDir & "\Resources\icon.ico")
 	TraySetIcon(@ScriptDir & "\Resources\icon.ico")
 
-	  FileDelete("C:\Users\Karl Hendrix\Desktop\asd\*")
-
 	;buttons
 	Local $btn_dsgn = BitOR($BS_ICON, $BS_BITMAP)
     Local $open_diag = GUICtrlCreateButton("Choose Directory", 20, 20, 40, 40, BitOR($BS_ICON, $BS_BITMAP, $BS_FLAT))
@@ -279,6 +277,11 @@ EndFunc
    $file_count_in = UBound(_FileListToArrayRec($sDir, "*", $FLTAR_FILES, $FLTAR_RECUR, 0, $FLTAR_NOPATH)) - 1
    $aFileList = _FileListToArrayRec($sDir, "*", $FLTAR_FILESFOLDERS, $FLTAR_RECUR,  0, $FLTAR_FULLPATH)
    ;ArrayDisplay($aFileList)
+
+   ;ileMove("C:/Users/Karl Hendrix/Desktop/asd/New Folder/1.png", "C:/Users/Karl Hendrix/Desktop/asd/Picture/2017", $FC_OVERWRITE)
+   ;If @error = 0 Then
+	;  MsgBox(0, "", "Duplicate file")
+   ;EndIf
 
    $tv_parent = _GUICtrlTreeView_Add($tv_files, 0, $sDir, 1, 1)
    $tv_parent_cons = $tv_parent
@@ -722,7 +725,7 @@ Func Archive()
 	  ElseIf $password_field <> "" And $reenter_pw <> "" Then
 			If $password_field == $reenter_pw Then
 			    If GUICtrlRead($archive_opt) = 1 Then
-				  RunWait('"' & @ScriptDir & '\Archive\zip' & '"' & " a " & $archive_name & $archive_type & " " & '"' & $working_directory & '/*' & '"' & " " & "-p" & $password_field & "-mx1")
+				  RunWait('"' & @ScriptDir & '\Archive\zip' & '"' & " a " & $archive_name & $archive_type & " " & '"' & $working_directory & '/*' & '"' & " " & "-p" & $password_field & " -mx1")
 			   Else
 				  RunWait('"' & @ScriptDir & '\Archive\zip' & '"' & " a " & $archive_name & $archive_type & " " & $selected_string & " " & "-p" & $password_field & " -mx1")
 			   EndIf
