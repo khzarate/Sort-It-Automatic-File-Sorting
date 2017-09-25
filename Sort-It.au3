@@ -434,7 +434,6 @@ Func file_cat($file_ext) ;file classifier function
 EndFunc
 
 
-
 Func Sort() ;Start of main sort function
    Dim $working_dir = $sDir
    Dim $f_class[0], $x, $y, $z, $a
@@ -500,6 +499,8 @@ For $x = 0 To UBound($_fileDetails) - 1
 			   FileMove($_fileDetails[$x][3], $working_dir & "\Document\" & $file_year & "\" & $keyword[1])
 			EndIf
 
+
+
    ElseIf $slctd_opt == 3 Then
 	  If $_fileDetails[$x][1] == ".docx" Or $_fileDetails[$x][1] == ".doc" Then
 		 DirCreate($working_dir & "\Document\Word Documents")
@@ -539,7 +540,31 @@ For $z = 0 To UBound($_fileDetails) - 1
 		 $fd_array = FileGetTime($_fileDetails[$z][3], $FT_MODIFIED, $FT_ARRAY)
 		 $file_year = $fd_array[0]
 		 $file_month = $fd_array[1]
-			FileMove($_fileDetails[$z][3], $working_dir & "\Picture\" & $file_year)
+
+
+		 $keyword = StringSplit($_fileDetails[$z][0], "-")
+			If @error == 1 Then
+			   If $_fileDetails[$z][1] == ".psd" Or $_fileDetails[$z][1] == ".psdx" Then
+				  DirCreate($working_dir & "\Picture\" & $file_year & "\Photoshop Files")
+				  FileMove($_fileDetails[$z][3], $working_dir & "\Picture\" & $file_year & "\Photoshop Files")
+			   ElseIf $_fileDetails[$z][1] == ".ai" Then
+				  DirCreate($working_dir & "\Picture\" & $file_year & "\Illustrator Files")
+				  FileMove($_fileDetails[$z][3], $working_dir & "\Picture\" & $file_year & "\Illustrator Files")
+			   EndIf
+			   FileMove($_fileDetails[$z][3], $working_dir & "\Picture\" & $file_year)
+			Else
+			   If $_fileDetails[$z][1] == ".psd" Or $_fileDetails[$z][1] == ".psdx" Then
+				  DirCreate($working_dir & "\Picture\" & $file_year & "\Photoshop Files\" & $keyword[1])
+				  FileMove($_fileDetails[$z][3], $working_dir & "\Picture\" &$file_year & "\Photoshop Files\" & $keyword[1])
+			   ElseIf $_fileDetails[$z][1] == ".ai" Then
+				  DirCreate($working_dir & "\Picture\" & $file_year & "\Illustrator Files\" & $keyword[1])
+				  FileMove($_fileDetails[$z][3], $working_dir & "\Picture\" & $file_year & "\Illustrator Files\" & $keyword[1])
+			   EndIf
+
+			   DirCreate($working_dir & "\Picture\" & $file_year & "\" & $keyword[1])
+			   FileMove($_fileDetails[$z][3], $working_dir & "\Picture\" & $file_year & "\" & $keyword[1])
+			EndIf
+
 	  ElseIf $_fileDetails[$z][5] == "Video" Then
 		 FileMove($_fileDetails[$z][3], $working_dir & "\" & $_fileDetails[$z][5])
 
